@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body>
+    <div class="flex justify-between w-400 mx-auto mt-7 items-center pb-5 border-b-3 mb-10">
+        <h1 class="text-3xl font-bold">Welcome {{user.fname}} to Developers Dashboard</h1>
+        <form action="/editproject/{{project.id}}/logout" method="post">
+            {% csrf_token %}
+            <input type="submit" value="logout" class="underline text-[1.2em] text-blue-500">
+        </form>
+    </div>
+    <h2 class="text-2xl ml-40">Create Project</h2>
+    <form action="/editproject/{{project.id}}/edit" method="post" class="mt-10 ml-10">
+        {% csrf_token %}
+        <input type="hidden" name="old_start_date" value="{{project.sdate}}">
+
+        <div class="w-130 ml-10 flex justify-around mb-10">
+            <label for="title" class="ml-20">Project Name</label>
+            <input class="border w-80 h-7" type="text" name="name" value="{{project.title}}">
+        </div>
+
+        <div class="w-130 ml-10 flex justify-around mb-5">
+            <label for="desc" class="ml-20">Description</label>
+            <textarea class="border w-80 h-15 mr-4" type="text" name="desc">{{project.desc}}</textarea>
+        </div>
+
+        <div class="w-130 ml-10 flex justify-around mb-10">
+            <label for="title" class="ml-20">Start Date</label>
+            <input class="border w-80 h-7" type="date" name="sdate" value="{{project.sdate}}">
+        </div>
+
+        <div class="w-130 ml-10 flex justify-around mb-10">
+            <label for="title" class="ml-20">End Date</label>
+            <input class="border w-80 h-7" type="date" name="endate" value="{{project.endate}}">
+        </div>
+
+        <input type="submit" class="border h-10 w-30 px-2 py-2 ml-50.5 shadow-[2px_2px_2px_rgb(0,0,0)]" value="Save">
+        <a href="/project/{{project.id}}/details" class="border px-4 rounded-2xl ml-10">Back</a>
+        <div class="mt-10 ml-40">
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.extra_tags == "project" %}
+            <p class="text-red-400 mb-3">{{message}}</p>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+    </form>
+
+</body>
+
+</html>
